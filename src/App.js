@@ -77,6 +77,9 @@ const App = () => {
     );
   };
 
+    // Filter options for Typeahead (excluding already selected events)
+  const typeaheadOptions = events.filter((item) => !selectedEvents.includes(item.event));
+
   return (
     <div>
       <>
@@ -86,9 +89,11 @@ const App = () => {
             <Typeahead
               id="searchContacts"
               labelKey="event"
-              options={events}
+              options={typeaheadOptions}
               placeholder='Search events'
               onChange={handleTypeaheadChange}
+              selected={selectedEvents.map(event => ({ event }))}
+              // Preserve selected items
               multiple
             />
           
@@ -111,7 +116,9 @@ const App = () => {
           return (
             <div key={date}>
               <h2>Events on: {date}</h2>
-              {
+              {filteredEvents.length === 0 ? (
+                <div className="alert alert-info" role="alert">No events available.</div>
+              ) : (
                 // Display a table of events
                 <table className="table table-striped">
                   <thead>
@@ -148,7 +155,7 @@ const App = () => {
                       ))}
                   </tbody>
                 </table>
-              }
+          )}
               {/* Pagination for navigating through event pages */}
               {pagesWithContent.length > 1 && (
                 <Pagination>
