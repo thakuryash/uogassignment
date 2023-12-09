@@ -4,21 +4,24 @@ import Pagination from 'react-bootstrap/Pagination';
 const App = () => {
   const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('https://v1.slashapi.com/events/google-sheets/FyqwlUzRL2/reunionevent', {
           headers: {
-            'X-API-KEY': 'OB8Pbh3aEK3sGUoFayUrzYnV0wMP13fO7kMQQzMV',
+            'X-API-KEY': process.env.REACT_APP_API_KEY,
           },
         });
         const apiData = await response.json();
         // console.log(apiData);
         setEvents(apiData.data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setEvents(false);
+        setEvents([]);
+        setLoading(false);
       }
     };
     fetchData();
@@ -46,7 +49,7 @@ const App = () => {
 
   const groupedEvents = groupEventsByDate();
   const eventsPerPage = 5;
-  // Calculate pages 
+// Calculate Pages
   const totalPages = (date) => {
     return Math.max(1, Math.ceil(groupedEvents[date]?.length / eventsPerPage));
   };
@@ -59,8 +62,11 @@ const App = () => {
     <div>
       <>
         <h1 className='text-center mt-4'>University Reunion Event</h1>
-        {Object.keys(groupEventsByDate()).map((date) => {
-          const pagesWithContent = [...Array(totalPages(date))].filter((_, index) => {
+           {loading ? (
+           <div>Loading...</div>
+          ) : (
+          Object.keys(groupEventsByDate()).map((date) => {
+            const pagesWithContent = [...Array(totalPages(date))].filter((_, index) => {
             const startIndex = index * 5;
             const endIndex = (index + 1) * 5;
             return groupedEvents[date]?.slice(startIndex, endIndex).some(item => item);
@@ -109,7 +115,7 @@ const App = () => {
               
             </div>
           );
-        })}
+        }))}
       </>
     </div>
   );
