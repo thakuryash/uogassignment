@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -82,9 +87,10 @@ const App = () => {
 
   return (
     <div>
-      <>
+      <Container>
         <h1 className='text-center mt-4'>University Reunion Event</h1>
-        <form>
+        <Form>
+        <InputGroup className='my-3'>
             {/* Typeahead component for searching and selecting events */}
             <Typeahead
               id="searchContacts"
@@ -96,8 +102,8 @@ const App = () => {
               // Preserve selected items
               multiple
             />
-          
-        </form>
+          </InputGroup>
+        </Form>
         
         {loading ? (
            <div>Loading...</div>
@@ -120,13 +126,13 @@ const App = () => {
                 <div className="alert alert-info" role="alert">No events available.</div>
               ) : (
                 // Display a table of events
-                <table className="table table-striped">
+                <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Attending</th>
-                      <th>Start time</th>
-                      <th>End time</th>
-                      <th>Event name</th>
+                      <th className="text-center">Attending</th>
+                      <th className="text-center">Start time</th>
+                      <th className="text-center">End time</th>
+                      <th className="text-center">Event name</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -134,27 +140,27 @@ const App = () => {
                       .slice((currentPage[date] - 1) * 5, currentPage[date] * 5)
                       .map((item) => (
                         <tr key={item.iD}>
-                          <td>
+                          <td className="text-center">
                             {selectedEvents.length > 0 ? (
-                              <button type="button" className="btn btn-danger" onClick={() => handleRemoveClick(item.event)}>REMOVE</button>
+                              <Button variant='danger' onClick={() => handleRemoveClick(item.event)}>REMOVE</Button>
                             ) : (
                               // Button to remove event when events are selected
                               item.avaiability > 0 ? (
-                                <button type="button" className="btn btn-danger">ATTEND</button>
+                                <Button variant='danger'>ATTEND</Button>
                               ) : (
                                 <p className='text-danger mb-0 fw-bolder'>SOLD OUT</p>
                               )
                             )}
                           </td>
-                          <td>{item.startTime}</td>
-                          <td>{item.endTime}</td>
-                          <td>
+                          <td className="text-center">{item.startTime}</td>
+                          <td className="text-center">{item.endTime}</td>
+                          <td className="text-center">
                           <a href="#" className="text-danger">{item.event}</a>
                           </td>
                         </tr>
                       ))}
                   </tbody>
-                </table>
+                </Table>
           )}
               {/* Pagination for navigating through event pages */}
               {pagesWithContent.length > 1 && (
@@ -173,7 +179,7 @@ const App = () => {
             </div>
           );
         }))}
-      </>
+      </Container>
     </div>
   );
 }
