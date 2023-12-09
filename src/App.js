@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
+import { Typeahead } from 'react-bootstrap-typeahead';
+
 
 const App = () => {
   const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const [selectedEvents, setSelectedEvents] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,35 +52,40 @@ const App = () => {
   const groupedEvents = groupEventsByDate();
   const eventsPerPage = 5;
 // Calculate Pages
-  const totalPages = (date) => {
-    return Math.max(1, Math.ceil(groupedEvents[date]?.length / eventsPerPage));
-  };
+  const totalPages = (startdate) => Math.ceil((groupedEvents[startdate] || []).length / eventsPerPage);
 
   const handlePageChange = (date, page) => {
     setCurrentPage(prev => ({ ...prev, [date]: page }));
   };
 
+  // Handle Typeahead (search) change
+  const handleTypeaheadChange = (selected) => {
+    setSelectedEvents(selected.map((item) => item.event));
+  };
+
+
   return (
     <div>
       <>
         <h1 className='text-center mt-4'>University Reunion Event</h1>
+        <form>
+            {/* Typeahead component for searching and selecting events */}
+            <Typeahead
+              id="searchContacts"
+              labelKey="event"
+              options={events}
+              placeholder='Search events'
+              onChange={handleTypeaheadChange}
+              multiple
+            />
+        </form>
            {loading ? (
            <div>Loading...</div>
           ) : (
-          Object.keys(groupEventsByDate()).map((date) => {
-            const pagesWithContent = [...Array(totalPages(date))].filter((_, index) => {
-            const startIndex = index * 5;
-            const endIndex = (index + 1) * 5;
-            return groupedEvents[date]?.slice(startIndex, endIndex).some(item => item);
-          });
-
-          return (
-            <div className="container" key={date}>
-              <h2>Events on: {date}</h2>
-              {groupedEvents[date]?.length === 0 ? (
-                <div className="alert alert-info" role="alert">No events available.</div>
-              ) : (
-                <table className="table table-striped">
+        Object.keys(groupedEvents).map((date) => (
+          <div key={date}>
+            <h2>Events on : {date}</h2>
+            <table className="table table-striped">
                   <thead>
                     <tr>
                       <th>Attending</th>
@@ -88,34 +95,39 @@ const App = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {groupedEvents[date]?.slice((currentPage[date] - 1) * 5, currentPage[date] * 5).map((item) => (
-                      <tr key={item.iD}>
-                        <td>
-                          <button type="button" className="btn btn-danger">Attend </button>
-                        </td>
-                        <td>{item.startTime}</td>
-                        <td>{item.endTime}</td>
-                        <td> {item.event}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-                <Pagination>
-                  {pagesWithContent.map((_, index) => (
-                    <Pagination.Item
-                      key={index + 1}
-                      active={index + 1 === currentPage[date]}
-                      onClick={() => handlePageChange(date, index + 1)}
-                    >
-                      {index + 1}
-                    </Pagination.Item>
+                {(groupedEvents[date] || [])
+                  .filter((item) =>
+                    selectedEvents.length === 0 ||
+                    selectedEvents.includes(item.event) ||
+                    item.avaibility === 0
+                  )
+                  .slice((currentPage[date] - 1) * eventsPerPage, currentPage[date] * eventsPerPage)
+                  .map((item) => (
+                    <tr key={item.iD}>
+                      <td>
+                      <button type="button" className="btn btn-danger">Attend </button>
+                      </td>
+                      <td>{item.startTime}</td>
+                      <td>{item.endTime}</td>
+                      <td>{item.event}</td>
+                    </tr>
                   ))}
-                </Pagination>
-              
-            </div>
-          );
-        }))}
+              </tbody>
+            </table>
+            <Pagination>
+              {[...Array(totalPages(date))].map((_, index) => (
+                <Pagination.Item
+                  key={index + 1}
+                  active={index + 1 === currentPage[date]}
+                  onClick={() => handlePageChange(date, index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          </div>
+        
+  )))}
       </>
     </div>
   );
