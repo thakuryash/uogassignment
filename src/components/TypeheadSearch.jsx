@@ -6,8 +6,11 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const TypeaheadSearch = ({ typeaheadOptions, selectedEvents, handleTypeaheadChange }) => {
   return (
+    // Form for the typeahead search
     <Form>
+      {/* Input group for styling */}
       <InputGroup className='my-3'>
+      {/* Typeahead component for event search */}
         <Typeahead
           id="searchContacts"
           labelKey="event"
