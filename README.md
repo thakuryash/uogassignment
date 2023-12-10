@@ -30,6 +30,15 @@ The University Reunion Event Web App is a demo application showcasing a web-base
 - **src/components:** Contains React components for different parts of the application.
 - **src/style:** Includes CSS files for styling the application components.
 
+## Improvements I can make into this solution
+a. To optimize the dynamic search, I'd start by adding a debounce mechanism to the Typeahead search for fewer API calls and better responsiveness. I'd also implement lazy loading and pagination to fetch only necessary data, improving initial load times. Server-side filtering would reduce data transfer, especially for larger datasets. Virtualization with react-window would enhance performance for extensive lists.
+
+b. I would focus on enhancing button accessibility by providing clear labels and visible focus styles, ensuring that users utilizing screen readers or keyboards can easily navigate and interact with the attending and removing buttons. Additionally, I would implement dynamic screen reader announcements for real-time updates when events are added or removed. Utilizing ARIA roles and attributes would help convey the semantic meaning of UI elements. Responsive design considerations would be maintained to ensure a consistent and user-friendly experience across various devices. Conducting usability testing with individuals of diverse abilities and providing comprehensive user documentation on using pick-and-choose features with assistive technologies would further contribute to the overall accessibility of the application.
+
+c. To ensure accessibility in the React application, I would meticulously address each component by using semantic HTML elements, providing meaningful alt text for images, enabling keyboard navigation, implementing clear focus styles, maintaining sufficient color contrast ratios, creating accessible forms with proper labels, utilizing ARIA roles and attributes as needed, and regularly testing with accessibility tools. For the overall application, I would prioritize a responsive design, follow the principles of progressive enhancement, conduct user testing with individuals possessing diverse abilities, and provide comprehensive documentation on using the application with assistive technologies.
+
+d. In designing and developing this application, I would prioritize a user-centric approach by considering accessibility from the outset, ensuring that all components adhere to best practices for inclusive design. I'd focus on creating a responsive and intuitive user interface with clear navigation and meaningful feedback. Additionally, I would be conscious of performance optimization, minimizing unnecessary rendering and optimizing data fetching for improved user experience. Thorough testing, including cross-browser and cross-device compatibility checks, would be essential, and I would conduct usability testing with a diverse group of users to identify and address potential pain points. Documentation for developers and end-users would also be a key aspect to facilitate seamless use and maintenance of the application over time.
+
 ![Searching Muliple Events](/Event.png)
 ![Initial Page](/Index.png)
 
