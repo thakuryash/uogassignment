@@ -1,0 +1,15 @@
+/* Added colors as provided */
+button.btn.btn-danger {
+ background-color:#c20430 !important;
+  
+}
+button.text-danger.btn.btn-link {
+ color: #d62f56;
+}
+h1,h2,th,td {
+  color: #666666 !important;
+}
+span.page-link {
+ background-color: #d62f56 !important;
+ border-color: #d62f56 !important;
+}

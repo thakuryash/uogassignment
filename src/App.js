@@ -4,7 +4,7 @@ import TypeaheadSearch from './components/TypeheadSearch';
 import EventTable from './components/EventTable';
 import CustomPagination from './components/Pagination';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './style/style.css';
 const App = () => {
   // State variables
   const [events, setEvents] = useState([]);
