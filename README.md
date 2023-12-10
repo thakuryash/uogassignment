@@ -31,7 +31,7 @@ The University Reunion Event Web App is a demo application showcasing a web-base
 - **src/style:** Includes CSS files for styling the application components.
 
 ![Searching Muliple Events](/Event.png)
-![Initial Page](/Event.png)
+![Initial Page](/Index.png)
 
 
 
